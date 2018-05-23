@@ -51,7 +51,8 @@ public class ServiceType extends HistoryData implements Serializable {
 
     @Override
     public String toString() {
-        return serviceTypeId + "::" + serviceName + "::" + getCreatedDate() + "::" + getLastUpdatedDate();
+        return serviceTypeId + "::" + serviceName + "::" + getCreatedDate() + "::" + getLastUpdatedDate() + "::" +
+               getObjectVersionNumber();
     }
 
 }

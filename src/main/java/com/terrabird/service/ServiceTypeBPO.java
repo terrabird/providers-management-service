@@ -19,4 +19,8 @@ public class ServiceTypeBPO {
     public List<ServiceType> getAllServiceTypes() {
         return serviceTypeDAO.findAll();
     }
+
+    public ServiceType findServiceTypeById(String serviceTypeId) {
+        return serviceTypeDAO.findServiceTypeById(serviceTypeId);
+    }
 }
