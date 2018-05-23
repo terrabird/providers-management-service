@@ -21,11 +21,8 @@ public class ServiceTypeDAO {
     private EntityManager entityManager;
 
     public List<ServiceType> findAll() {
-        /*Query query = entityManager.createNamedQuery(
-            "query_find_all_service_types", ServiceType.class);*/
         Query query = entityManager.createQuery("select st from ServiceType st");
         return (List<ServiceType>) query.getResultList();
-        //return query.getResultList();
     }
 
     public ServiceType findServiceTypeById(String serviceTypeId) {
