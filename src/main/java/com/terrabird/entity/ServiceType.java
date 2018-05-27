@@ -3,9 +3,13 @@ package com.terrabird.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Praveer Das
@@ -28,6 +32,10 @@ public class ServiceType extends HistoryData implements Serializable {
 
     public ServiceType() {}
 
+    @OneToMany
+    @JoinColumn(name="SERVICE_TYPE_ID", referencedColumnName="SERVICE_TYPE_ID")
+    private Set<ServiceSubType> serviceSubTypeSet = new HashSet();
+
     /* Getters and Setters */
     public String getServiceTypeId() {
         return serviceTypeId;
@@ -49,10 +57,17 @@ public class ServiceType extends HistoryData implements Serializable {
         this.description = description;
     }
 
+    public Set<ServiceSubType> getServiceSubTypeSet() {
+        return serviceSubTypeSet;
+    }
+
+    public void setServiceSubTypeSet(Set<ServiceSubType> serviceSubTypeSet) {
+        this.serviceSubTypeSet = serviceSubTypeSet;
+    }
+
     @Override
     public String toString() {
         return serviceTypeId + "::" + serviceName + "::" + getCreatedDate() + "::" + getLastUpdatedDate() + "::" +
                getObjectVersionNumber();
     }
-
 }

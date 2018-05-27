@@ -1,23 +1,27 @@
 package com.terrabird.entity;
 
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author Praveer Das
  */
 @MappedSuperclass
-public class HistoryData {
+@EntityListeners(AuditingEntityListener.class)
+public abstract class HistoryData implements Serializable{
 
     @Column(name="CREATED_DATE", nullable = false, updatable = false)
-    @CreationTimestamp
+    @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 

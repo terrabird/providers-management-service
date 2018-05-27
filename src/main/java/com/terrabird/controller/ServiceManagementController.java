@@ -1,7 +1,10 @@
 package com.terrabird.controller;
 
+import com.terrabird.entity.ServiceSubType;
 import com.terrabird.entity.ServiceType;
 import com.terrabird.service.ServiceTypeBPO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.ui.ModelMap;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Praveer Das
@@ -22,6 +26,8 @@ public class ServiceManagementController {
     @Autowired
     private ServiceTypeBPO serviceTypeBPO;
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @RequestMapping(value = "/serviceCategories", method = RequestMethod.GET)
     public List<ServiceType> getAllServiceCategories(ModelMap modelMap) {
         List<ServiceType> serviceTypes = serviceTypeBPO.getAllServiceTypes();
@@ -32,5 +38,14 @@ public class ServiceManagementController {
     @RequestMapping(value = "/serviceCategories/{serviceTypeId}")
     public ServiceType findServiceTypeById(@PathVariable String serviceTypeId){
         return serviceTypeBPO.findServiceTypeById(serviceTypeId);
+    }
+
+    @RequestMapping(value = "/serviceSubCategories/{serviceTypeId}")
+    public Set<ServiceSubType> getServiceSubTypesByServiceType(@PathVariable String serviceTypeId) {
+        Set<ServiceSubType> s = serviceTypeBPO.findServiceSubTypesByServiceTypeId(serviceTypeId);
+        for(ServiceSubType sst : s) {
+            log.info(sst.getServiceSubTypeId() + " " + sst.getServiceSubTypeName());
+        }
+        return s;
     }
 }
