@@ -15,6 +15,7 @@ import java.util.Set;
 @Component
 public class ServiceTypeBPO {
 
+    @SuppressWarnings("unused")
     @Autowired
     private ServiceTypeDAO serviceTypeDAO;
 

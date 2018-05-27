@@ -19,10 +19,12 @@ import java.util.Set;
 /**
  * @author Praveer Das
  */
+@SuppressWarnings("unused")
 @RestController
 @EnableAutoConfiguration
 public class ServiceManagementController {
 
+    @SuppressWarnings("unused")
     @Autowired
     private ServiceTypeBPO serviceTypeBPO;
 
