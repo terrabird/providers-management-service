@@ -27,6 +27,8 @@ public class LoggingAspect {
     public void logBeforeDAOMethods() {}
     @Pointcut("execution(* com.terrabird.dao.ServiceTypeDAO.*(..))")
     public void logAfterDAOMethods() {}
+    @Pointcut("execution(* com.terrabird.service..*(..))")
+    public void logServiceLayerMethods() {}
 
 
     @Before("logBeforeDAOMethods()")
@@ -38,6 +40,13 @@ public class LoggingAspect {
     @After("logAfterDAOMethods()")
     public void logExitAdvice(JoinPoint joinPoint) {
         log.info(joinPoint.getTarget().getClass().getName() + " :: " + joinPoint.getSignature().getName() + " exited.");
+    }
+
+    @Before("logServiceLayerMethods()")
+    public void logServiceEntryMethods(JoinPoint joinPoint)
+    {
+        log.info(joinPoint.getTarget().getClass().getName() + " :: " + joinPoint.getSignature().getName());
+        log.info("Agruments Passed=" + Arrays.toString(joinPoint.getArgs()));
     }
 
 }
