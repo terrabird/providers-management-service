@@ -1,5 +1,6 @@
 package com.terrabird.controller;
 
+import com.terrabird.persistence.ServiceProvider;
 import com.terrabird.persistence.ServiceSubType;
 import com.terrabird.persistence.ServiceType;
 import com.terrabird.service.ServiceTypeBPO;
@@ -51,5 +52,10 @@ public class ServiceManagementController {
             log.debug(sst.getServiceSubTypeId() + " " + sst.getServiceSubTypeName());
         }
         return s;
+    }
+
+    @RequestMapping(value = "/serviceProviders/{serviceTypeId}", method = RequestMethod.GET)
+    public Set<ServiceProvider> getServiceProvidersByServiceTypeId(@PathVariable String serviceTypeId) {
+        return serviceTypeBPO.findServiceProvidersByServiceTypeId(serviceTypeId);
     }
 }

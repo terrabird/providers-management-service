@@ -1,6 +1,7 @@
 package com.terrabird.service;
 
 import com.terrabird.dao.ServiceTypeDAO;
+import com.terrabird.persistence.ServiceProvider;
 import com.terrabird.persistence.ServiceSubType;
 import com.terrabird.persistence.ServiceType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,9 @@ public class ServiceTypeBPO {
 
     public Set<ServiceSubType> findServiceSubTypesByServiceTypeId(String serviceTypeId) {
         return serviceTypeDAO.findServiceSubTypesByServiceTypeId(serviceTypeId);
+    }
+
+    public Set<ServiceProvider> findServiceProvidersByServiceTypeId(String serviceTypeId) {
+        return serviceTypeDAO.findServiceProvidersByServiceTypeId(serviceTypeId);
     }
 }

@@ -1,5 +1,7 @@
 package com.terrabird.dao;
 
+import com.terrabird.persistence.ProviderServiceMapping;
+import com.terrabird.persistence.ServiceProvider;
 import com.terrabird.persistence.ServiceSubType;
 import com.terrabird.persistence.ServiceType;
 import org.springframework.cache.annotation.Cacheable;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,5 +40,15 @@ public class ServiceTypeDAO {
     public Set<ServiceSubType> findServiceSubTypesByServiceTypeId(String serviceTypeId) {
         ServiceType serviceType = entityManager.find(ServiceType.class, serviceTypeId);
         return serviceType.getServiceSubTypeSet();
+    }
+
+    @Cacheable
+    public Set<ServiceProvider> findServiceProvidersByServiceTypeId(String serviceTypeId) {
+        ServiceType serviceType = entityManager.find(ServiceType.class, serviceTypeId);
+        Set<ServiceProvider> serviceProviders = new HashSet<>();
+        for(ProviderServiceMapping mapping : serviceType.getServiceProviders()) {
+            serviceProviders.add(mapping.getServiceProvider());
+        }
+        return serviceProviders;
     }
 }
