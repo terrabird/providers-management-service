@@ -1,7 +1,8 @@
 package com.terrabird.dao;
 
-import com.terrabird.entity.ServiceSubType;
-import com.terrabird.entity.ServiceType;
+import com.terrabird.persistence.ServiceSubType;
+import com.terrabird.persistence.ServiceType;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -27,10 +28,12 @@ public class ServiceTypeDAO {
         return (List<ServiceType>) query.getResultList();
     }
 
+    @Cacheable
     public ServiceType findServiceTypeById(String serviceTypeId) {
         return entityManager.find(ServiceType.class, serviceTypeId);
     }
 
+    @Cacheable
     public Set<ServiceSubType> findServiceSubTypesByServiceTypeId(String serviceTypeId) {
         ServiceType serviceType = entityManager.find(ServiceType.class, serviceTypeId);
         return serviceType.getServiceSubTypeSet();

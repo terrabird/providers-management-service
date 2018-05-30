@@ -1,10 +1,10 @@
 package com.terrabird.service;
 
 import com.terrabird.dao.ServiceTypeDAO;
-import com.terrabird.entity.ServiceSubType;
-import com.terrabird.entity.ServiceType;
+import com.terrabird.persistence.ServiceSubType;
+import com.terrabird.persistence.ServiceType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * @author Praveer Das
  */
-@Component
+@Service
 public class ServiceTypeBPO {
 
     @SuppressWarnings("unused")

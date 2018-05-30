@@ -1,7 +1,7 @@
 package com.terrabird.controller;
 
-import com.terrabird.entity.ServiceSubType;
-import com.terrabird.entity.ServiceType;
+import com.terrabird.persistence.ServiceSubType;
+import com.terrabird.persistence.ServiceType;
 import com.terrabird.service.ServiceTypeBPO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,15 +38,17 @@ public class ServiceManagementController {
     }
 
     @RequestMapping(value = "/serviceCategories/{serviceTypeId}")
-    public ServiceType findServiceTypeById(@PathVariable String serviceTypeId){
-        return serviceTypeBPO.findServiceTypeById(serviceTypeId);
+    public ServiceType getServiceTypeById(@PathVariable String serviceTypeId){
+        ServiceType st = serviceTypeBPO.findServiceTypeById(serviceTypeId);
+        log.debug("Service Category :: " + st.getServiceName());
+        return st;
     }
 
     @RequestMapping(value = "/serviceSubCategories/{serviceTypeId}")
     public Set<ServiceSubType> getServiceSubTypesByServiceType(@PathVariable String serviceTypeId) {
         Set<ServiceSubType> s = serviceTypeBPO.findServiceSubTypesByServiceTypeId(serviceTypeId);
         for(ServiceSubType sst : s) {
-            log.info(sst.getServiceSubTypeId() + " " + sst.getServiceSubTypeName());
+            log.debug(sst.getServiceSubTypeId() + " " + sst.getServiceSubTypeName());
         }
         return s;
     }

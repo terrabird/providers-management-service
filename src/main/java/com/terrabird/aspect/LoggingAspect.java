@@ -6,6 +6,7 @@ package com.terrabird.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -23,30 +24,53 @@ public class LoggingAspect {
 
     private final org.slf4j.Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Pointcut("execution(* com.terrabird.dao.ServiceTypeDAO.*(..))")
-    public void logBeforeDAOMethods() {}
-    @Pointcut("execution(* com.terrabird.dao.ServiceTypeDAO.*(..))")
-    public void logAfterDAOMethods() {}
+    @Pointcut("execution(* com.terrabird.controller..*(..))")
+    public void logControllerMethods() {}
     @Pointcut("execution(* com.terrabird.service..*(..))")
-    public void logServiceLayerMethods() {}
+    public void logServiceMethods() {}
+    @Pointcut("execution(* com.terrabird.dao..*(..))")
+    public void logDAOMethods() {}
+    @Pointcut("execution(* com.terrabird.*.*(..))")
+    public void logExceptionForAllMethods(){}
 
 
-    @Before("logBeforeDAOMethods()")
+    @Before("logControllerMethods()")
+    public void logControllerEntryMethods(JoinPoint joinPoint) {
+        log.info(joinPoint.getTarget().getClass().getName() + " :: " + joinPoint.getSignature().getName());
+        log.info("Agruments Passed=" + Arrays.toString(joinPoint.getArgs()));
+    }
+
+    @After("logControllerMethods()")
+    public void logControllerExitMethods(JoinPoint joinPoint) {
+        log.info(joinPoint.getTarget().getClass().getName() + " :: " + joinPoint.getSignature().getName() + " exited.");
+    }
+
+    @Before("logServiceMethods()")
+    public void logServiceEntryMethods(JoinPoint joinPoint)
+    {
+        log.info(joinPoint.getTarget().getClass().getName() + " :: " + joinPoint.getSignature().getName());
+        log.info("Agruments Passed=" + Arrays.toString(joinPoint.getArgs()));
+    }
+
+    @After("logServiceMethods()")
+    public void logServiceExitMethods(JoinPoint joinPoint) {
+        log.info(joinPoint.getTarget().getClass().getName() + " :: " + joinPoint.getSignature().getName() + " exited.");
+    }
+
+    @Before("logDAOMethods()")
     public void logEntryAdvice(JoinPoint joinPoint) {
         log.info(joinPoint.getTarget().getClass().getName() + " :: " + joinPoint.getSignature().getName());
         log.info("Agruments Passed=" + Arrays.toString(joinPoint.getArgs()));
     }
 
-    @After("logAfterDAOMethods()")
+    @After("logDAOMethods()")
     public void logExitAdvice(JoinPoint joinPoint) {
         log.info(joinPoint.getTarget().getClass().getName() + " :: " + joinPoint.getSignature().getName() + " exited.");
     }
 
-    @Before("logServiceLayerMethods()")
-    public void logServiceEntryMethods(JoinPoint joinPoint)
-    {
-        log.info(joinPoint.getTarget().getClass().getName() + " :: " + joinPoint.getSignature().getName());
-        log.info("Agruments Passed=" + Arrays.toString(joinPoint.getArgs()));
+    @AfterThrowing(pointcut = "logExceptionForAllMethods()" , throwing="ex")
+    public void afterThrowingAdviceForAllMethods(JoinPoint joinPoint, Exception ex) throws Throwable {
+        log.info("Exception Caught : " + ex);
     }
 
 }
